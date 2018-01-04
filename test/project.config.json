@@ -10,8 +10,7 @@
 	"compileType": "game",
 	"libVersion": "game",
 	"appid": "touristappid",
-	"projectname": "weiGame",
-	"isGameTourist": true,
+	"projectname": "test",
 	"condition": {
 		"search": {
 			"current": -1,
@@ -22,12 +21,13 @@
 			"list": []
 		},
 		"game": {
-			"list": [],
-			"current": -1
+			"currentL": -1,
+			"list": []
 		},
 		"miniprogram": {
 			"current": -1,
 			"list": []
 		}
-	}
+	},
+	"isGameTourist": true
 }

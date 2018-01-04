@@ -30824,7 +30824,7 @@
 
 				request.open( 'GET', url, true );
 
-				request.addEventListener( 'load', function ( event ) {
+				request.onload = function ( event ) {
 
 					var response = this.response;
 
@@ -30875,9 +30875,9 @@
 
 					}
 
-				}, false );
+				};
 
-				request.addEventListener( 'progress', function ( event ) {
+				request.onprogress = function ( event ) {
 
 					var callbacks = loading[ url ];
 
@@ -30888,9 +30888,9 @@
 
 					}
 
-				}, false );
+				};
 
-				request.addEventListener( 'error', function ( event ) {
+				request.onerror = function ( event ) {
 
 					var callbacks = loading[ url ];
 
@@ -30906,7 +30906,7 @@
 					scope.manager.itemEnd( url );
 					scope.manager.itemError( url );
 
-				}, false );
+				};
 
 				if ( this.responseType !== undefined ) request.responseType = this.responseType;
 				if ( this.withCredentials !== undefined ) request.withCredentials = this.withCredentials;

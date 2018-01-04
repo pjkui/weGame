@@ -1,4 +1,5 @@
 import * as THREE from 'libs/three.js'
+import 'libs/OBJLoader.js'
 
 const zDistance   = 20
 const DENSITY     = 8
@@ -43,9 +44,48 @@ export default class Main {
 
     camera = new THREE.PerspectiveCamera(65, cameraAspect, 10, 100000)
     camera.position.z = 800
+    camera.position.y = 100
 
     let loader = new THREE.ImageLoader()
     loader.load(imageURL, this.imageLoaded.bind(this))
+    //load 3d model
+    var manager = new THREE.LoadingManager();
+    manager.onProgress = function (item, loaded, total) {
+
+      console.log(item, loaded, total);
+
+    };
+
+    var textureLoader = new THREE.TextureLoader(manager);
+    var texture = textureLoader.load('images/girl/color.png');
+
+    // model
+
+    var onProgress = function (xhr) {
+      if (xhr.lengthComputable) {
+        var percentComplete = xhr.loaded / xhr.total * 100;
+        console.log(Math.round(percentComplete, 2) + '% downloaded');
+      }
+    };
+
+    var onError = function (xhr) {
+    };
+    console.log(THREE.OBJLoader);
+    loader = new THREE.OBJLoader(manager);
+    loader.load('images/girl/cartoongirl.obj', function (object) {
+
+      object.traverse(function (child) {
+        if (child instanceof THREE.Mesh) {
+          child.material.map = texture;
+        }
+
+      });
+
+      object.position.y = - 95;
+      scene.add(object);
+
+    }, onProgress, onError);
+
   }
 
   /** 载入图片 */
@@ -133,6 +173,12 @@ export default class Main {
     // add subtle ambient lighting
     let ambientLight = new THREE.AmbientLight(0x222222)
     scene.add(ambientLight)
+
+    // grid
+    var gridHelper = new THREE.GridHelper(1000, 10, 0x00ff00, 0x0000ff);
+    gridHelper.position.set(0, - 100, 0);
+    scene.add(gridHelper);
+
 
     // directional lighting
     let directionalLight = new THREE.DirectionalLight(0xffffff)
